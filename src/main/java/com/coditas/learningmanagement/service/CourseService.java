@@ -1,11 +1,7 @@
 package com.coditas.learningmanagement.service;
-
-import com.coditas.learningmanagement.constants.AuthConstants;
-import com.coditas.learningmanagement.constants.DtoConstants;
 import com.coditas.learningmanagement.dto.request.CourseRequest;
 import com.coditas.learningmanagement.dto.response.CourseResponse;
 import com.coditas.learningmanagement.dto.response.CourseResponseDto;
-import com.coditas.learningmanagement.dto.response.ErrorResponse;
 import com.coditas.learningmanagement.entity.Course;
 import com.coditas.learningmanagement.entity.Employee;
 import com.coditas.learningmanagement.exception.AuthorizationException;
@@ -54,14 +50,8 @@ public class CourseService {
         return courseMapper.toDto(course);
     }
 
-    public CourseResponse updateCourse(CourseRequest courseRequest, Long id) {
-        Course course=courseRepository.findById(id).orElseThrow(()->new NotFoundException(NOT_FOUND));
-        course=courseMapper.toEntity(courseRequest);
-        courseRepository.save(course);
-        return new CourseResponse(UPDATED);
-    }
 
-    public CourseResponse updateCoursePartial(Map<String,Object> updates,Long id) {
+    public CourseResponse updateCourse(Map<String,Object> updates,Long id) {
         Course course=courseRepository.findById(id).orElseThrow(()->new NotFoundException(NOT_FOUND));
         try {
             objectMapper.updateValue(course,updates);
@@ -70,5 +60,11 @@ public class CourseService {
         }
 
         return new CourseResponse(UPDATED);
+    }
+
+    public CourseResponse deleteCourse(Long id) {
+        Course course=courseRepository.findById(id).orElseThrow(()->new NotFoundException(NOT_FOUND));
+        courseRepository.delete(course);
+        return new CourseResponse(DELETED);
     }
 }

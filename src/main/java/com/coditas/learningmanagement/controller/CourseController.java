@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -37,17 +38,19 @@ public class CourseController {
         ApplicationResponse<CourseResponseDto> applicationResponse=new ApplicationResponse<>(courseService.getCourse(id));
         return new ResponseEntity<>(applicationResponse, HttpStatus.CREATED);
     }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<ApplicationResponse<CourseResponse>>updateCourse(@RequestBody CourseRequest courseRequest,@PathVariable Long id){
-        ApplicationResponse<CourseResponse> applicationResponse=new ApplicationResponse<>(courseService.updateCourse(courseRequest,id));
+    @PatchMapping("/{id}")
+    public ResponseEntity<ApplicationResponse<CourseResponse>>updateCoursePartial(@RequestBody Map<String,Object> updates, @PathVariable Long id){
+        ApplicationResponse<CourseResponse> applicationResponse=new ApplicationResponse<>(courseService.updateCourse(updates,id));
         return new ResponseEntity<>(applicationResponse, HttpStatus.CREATED);
     }
     @PatchMapping("/{id}")
-    public ResponseEntity<ApplicationResponse<CourseResponse>>updateCoursePartial(@RequestBody CourseRequest courseRequest,@PathVariable Long id){
-        ApplicationResponse<CourseResponse> applicationResponse=new ApplicationResponse<>(courseService.updateCourse(courseRequest,id));
+    public ResponseEntity<ApplicationResponse<CourseResponse>>deleteCourse(@PathVariable Long id){
+        ApplicationResponse<CourseResponse> applicationResponse=new ApplicationResponse<>(courseService.deleteCourse(id));
         return new ResponseEntity<>(applicationResponse, HttpStatus.CREATED);
     }
+
+
+
 
 
 
