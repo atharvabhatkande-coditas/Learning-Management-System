@@ -1,4 +1,4 @@
-package com.coditas.learningmanagement.dto;
+package com.coditas.learningmanagement.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,8 +9,6 @@ import java.util.List;
 
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
 public class ApplicationResponse<T> {
 
     private T data;
@@ -22,5 +20,10 @@ public class ApplicationResponse<T> {
 
     public ApplicationResponse(T data) {
         this.data = data;
+    }
+
+    public ApplicationResponse(T data, List<ErrorResponse> errors) {
+        this.data = data;
+        this.errors = errors;
     }
 }

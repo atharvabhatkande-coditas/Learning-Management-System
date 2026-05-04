@@ -1,7 +1,8 @@
 package com.coditas.learningmanagement.entity;
 
+import com.coditas.learningmanagement.enums.DepartmentType;
 import com.coditas.learningmanagement.enums.RoleType;
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +13,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -26,7 +26,11 @@ public class Employee implements UserDetails {
 
     private String firstName;
     private String lastName;
-    private String department;
+    @Enumerated(EnumType.STRING)
+    private DepartmentType department;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @Enumerated(EnumType.STRING)
     private Set<RoleType> roles;
 
     @Override

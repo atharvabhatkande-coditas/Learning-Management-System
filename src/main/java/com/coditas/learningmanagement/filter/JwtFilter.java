@@ -1,7 +1,7 @@
 package com.coditas.learningmanagement.filter;
 
-import com.coditas.learningmanagement.dto.ApplicationResponse;
-import com.coditas.learningmanagement.dto.ErrorResponse;
+import com.coditas.learningmanagement.dto.response.ApplicationResponse;
+import com.coditas.learningmanagement.dto.response.ErrorResponse;
 import com.coditas.learningmanagement.exception.NotFoundException;
 import com.coditas.learningmanagement.service.CustomUserDetailsService;
 import com.coditas.learningmanagement.util.JwtUtil;

@@ -1,4 +1,4 @@
-package com.coditas.learningmanagement.dto;
+package com.coditas.learningmanagement.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Tokens {
+public class LoginResponseTokens {
 
     private String accessToken;
     private String refreshToken;

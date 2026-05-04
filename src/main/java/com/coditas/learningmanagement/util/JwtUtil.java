@@ -1,7 +1,7 @@
 package com.coditas.learningmanagement.util;
 
 import com.coditas.learningmanagement.constants.ExceptionConstants;
-import com.coditas.learningmanagement.dto.Tokens;
+import com.coditas.learningmanagement.dto.response.LoginResponseTokens;
 import com.coditas.learningmanagement.exception.AuthenticationException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -31,8 +31,7 @@ public class JwtUtil {
 
     }
 
-    public Tokens generateTokens(Authentication authentication) {
-        UserDetails userDetails=(UserDetails)authentication.getPrincipal();
+    public LoginResponseTokens generateTokens(UserDetails userDetails) {
         if(userDetails==null){
             throw new AuthenticationException(ExceptionConstants.USER_NOT_FOUND);
         }
@@ -41,7 +40,7 @@ public class JwtUtil {
                 .map(GrantedAuthority::getAuthority).toList();
         String accessToken=generateTokenInternal(userDetails.getUsername(),roles,accessExpiration,"access");
         String refreshToken=generateTokenInternal(userDetails.getUsername(),roles,refreshExpiration,"refresh");
-        return  new Tokens(accessToken,refreshToken);
+        return  new LoginResponseTokens(accessToken,refreshToken);
     }
 
     public String generateTokenInternal(String username, List<String> roles,long expirationTime,String type){

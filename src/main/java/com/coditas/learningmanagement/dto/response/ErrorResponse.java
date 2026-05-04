@@ -1,4 +1,4 @@
-package com.coditas.learningmanagement.dto;
+package com.coditas.learningmanagement.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

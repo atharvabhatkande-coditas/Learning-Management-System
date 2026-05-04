@@ -1,6 +1,9 @@
 package com.coditas.learningmanagement.enums;
 
 public enum DepartmentType {
-    IT,
-
+    HR,
+    SALES,
+    SUPPORT,
+    DELIVERY,
+    FINANCE
 }
