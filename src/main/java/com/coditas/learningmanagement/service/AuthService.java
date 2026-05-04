@@ -1,7 +1,5 @@
 package com.coditas.learningmanagement.service;
 
-import com.coditas.learningmanagement.constants.AuthConstants;
-import com.coditas.learningmanagement.constants.ExceptionConstants;
 import com.coditas.learningmanagement.dto.request.LoginRequest;
 import com.coditas.learningmanagement.dto.request.RegisterRequest;
 import com.coditas.learningmanagement.dto.response.LoginResponseTokens;
