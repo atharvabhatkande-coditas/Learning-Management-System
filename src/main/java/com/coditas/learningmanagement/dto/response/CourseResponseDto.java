@@ -1,0 +1,19 @@
+package com.coditas.learningmanagement.dto.response;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class CourseResponseDto {
+    private Long courseId;
+    private String title;
+    private String description;
+    private String technology;
+    private Integer duration;
+
+}

@@ -7,15 +7,18 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import static com.coditas.learningmanagement.constants.DtoConstants.NOT_EMPTY;
+import static com.coditas.learningmanagement.constants.DtoConstants.NOT_NULL;
+
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class LoginRequest {
-    @NotBlank(message = "Username cannot be empty")
-    @NotNull(message = "Username cannot be null")
+    @NotNull(message = NOT_EMPTY)
+    @NotBlank(message = NOT_NULL)
     private String username;
-    @NotBlank(message = "Password cannot be empty")
-    @NotNull(message = "Password cannot be null")
+    @NotNull(message = NOT_EMPTY)
+    @NotBlank(message = NOT_NULL)
     private String password;
 }

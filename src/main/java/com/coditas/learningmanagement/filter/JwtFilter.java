@@ -1,5 +1,6 @@
 package com.coditas.learningmanagement.filter;
 
+import com.coditas.learningmanagement.constants.AuthConstants;
 import com.coditas.learningmanagement.dto.response.ApplicationResponse;
 import com.coditas.learningmanagement.dto.response.ErrorResponse;
 import com.coditas.learningmanagement.exception.NotFoundException;
@@ -47,23 +48,24 @@ public class JwtFilter extends OncePerRequestFilter {
             }catch (JwtException e){
                 response.setStatus(401);
                 response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-                ErrorResponse errorResponse=new ErrorResponse("Unauthorized",401);
+                ErrorResponse errorResponse=new ErrorResponse(AuthConstants.UNAUTHORIZED,401);
                 ApplicationResponse<List<ErrorResponse>> applicationResponse=new ApplicationResponse<>(List.of(errorResponse));
                 response.getWriter().write(objectMapper.writeValueAsString(applicationResponse));
                 return;
             }
         }
 
-        if(jwtUtil.extractTypeFromToken(token).equals("refresh")){
-            response.setStatus(401);
-            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-            ErrorResponse errorResponse=new ErrorResponse("Unauthorized",401);
-            ApplicationResponse<List<ErrorResponse>> applicationResponse=new ApplicationResponse<>(List.of(errorResponse));
-            response.getWriter().write(objectMapper.writeValueAsString(applicationResponse));
-            return;
-        }
+
 
         if(username!=null && SecurityContextHolder.getContext().getAuthentication()==null){
+            if(jwtUtil.extractTypeFromToken(token).equals("refresh")){
+                response.setStatus(401);
+                response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+                ErrorResponse errorResponse=new ErrorResponse(AuthConstants.UNAUTHORIZED,401);
+                ApplicationResponse<List<ErrorResponse>> applicationResponse=new ApplicationResponse<>(List.of(errorResponse));
+                response.getWriter().write(objectMapper.writeValueAsString(applicationResponse));
+                return;
+            }
             try{
                 UserDetails userDetails=customUserDetailsService.loadUserByUsername(username);
                 if(jwtUtil.validateToken(userDetails,username,token)){
@@ -73,7 +75,7 @@ public class JwtFilter extends OncePerRequestFilter {
             }catch (NotFoundException e){
                 response.setStatus(401);
                 response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-                ErrorResponse errorResponse=new ErrorResponse("Unauthorized",401);
+                ErrorResponse errorResponse=new ErrorResponse(AuthConstants.UNAUTHORIZED,401);
                 ApplicationResponse<List<ErrorResponse>> applicationResponse=new ApplicationResponse<>(List.of(errorResponse));
                 response.getWriter().write(objectMapper.writeValueAsString(applicationResponse));
                 return;

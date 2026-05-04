@@ -11,19 +11,22 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import static com.coditas.learningmanagement.constants.DtoConstants.NOT_EMPTY;
+import static com.coditas.learningmanagement.constants.DtoConstants.NOT_NULL;
+
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class RegisterRequest {
 
-    @NotBlank(message = "Username cannot be empty")
-    @NotNull(message = "Username cannot be null")
+    @NotNull(message = NOT_EMPTY)
+    @NotBlank(message = NOT_NULL)
     @Email(message = "Invalid Email format")
     private String username;
 
-    @NotBlank(message = "Password cannot be empty")
-    @NotNull(message = "Password cannot be null")
+    @NotNull(message = NOT_EMPTY)
+    @NotBlank(message = NOT_NULL)
     @Size(min = 8,message = "Password min 8 characters required")
     private String password;
 

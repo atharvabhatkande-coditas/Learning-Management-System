@@ -15,6 +15,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -73,6 +75,16 @@ public class AuthService {
         }catch (Exception e){
             throw new AuthorizationException(UNAUTHORIZED);
         }
+    }
+
+
+    public UserDetails getUserDetails(){
+        Authentication authentication= SecurityContextHolder.getContext().getAuthentication();
+        UserDetails userDetails=(UserDetails)authentication.getPrincipal();
+        if(Objects.isNull(userDetails)){
+            throw new AuthorizationException(UNAUTHORIZED);
+        }
+        return userDetails;
     }
 
 
