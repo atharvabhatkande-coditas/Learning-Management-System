@@ -13,7 +13,6 @@ import com.coditas.learningmanagement.repository.CustomUserDetailsRepository;
 import com.coditas.learningmanagement.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -56,6 +55,7 @@ public class AuthService {
         Employee employee=employeeMapper.toEntity(registerRequest);
 
         employee.setRoles(roles);
+        employee.setEmployeeStatus(registerRequest.getEmployeeStatus());
         customUserDetailsRepository.save(employee);
         return new RegisterResponse(REGISTRATION_SUCCESS);
 
@@ -70,7 +70,7 @@ public class AuthService {
             }
 
            return jwtUtil.generateTokens(userDetails);
-        }catch (BadCredentialsException e){
+        }catch (Exception e){
             throw new AuthorizationException(UNAUTHORIZED);
         }
     }

@@ -1,5 +1,6 @@
 package com.coditas.learningmanagement.dto.request;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,10 +12,10 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class LoginRequest {
-    @NotNull(message = "Username cannot be empty")
+    @NotBlank(message = "Username cannot be empty")
     @NotNull(message = "Username cannot be null")
     private String username;
-    @NotNull(message = "Password cannot be empty")
+    @NotBlank(message = "Password cannot be empty")
     @NotNull(message = "Password cannot be null")
     private String password;
 }

@@ -28,13 +28,13 @@ public class Course {
     @JoinColumn(name = "created_by")
     private Employee createdBy;
 
-    @OneToMany(mappedBy = "course")
+    @OneToMany(mappedBy = "course",cascade = CascadeType.ALL)
     private List<Enrollment> enrollmentList=new ArrayList<>();
 
-    @OneToMany(mappedBy = "course")
+    @OneToMany(mappedBy = "course",cascade = CascadeType.ALL)
     private List<Lectures>lectures=new ArrayList<>();
 
-    @OneToMany(mappedBy = "course")
+    @OneToMany(mappedBy = "course",cascade = CascadeType.ALL)
     private List<Assignment>assignments=new ArrayList<>();
 
 

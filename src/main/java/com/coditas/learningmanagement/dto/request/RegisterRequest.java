@@ -1,6 +1,8 @@
 package com.coditas.learningmanagement.dto.request;
 
 import com.coditas.learningmanagement.enums.DepartmentType;
+import com.coditas.learningmanagement.enums.EmployeeStatus;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -17,6 +19,7 @@ public class RegisterRequest {
 
     @NotBlank(message = "Username cannot be empty")
     @NotNull(message = "Username cannot be null")
+    @Email(message = "Invalid Email format")
     private String username;
 
     @NotBlank(message = "Password cannot be empty")
@@ -29,4 +32,6 @@ public class RegisterRequest {
     private DepartmentType department;
 
     private String securityCode;
+
+    private EmployeeStatus employeeStatus;
 }

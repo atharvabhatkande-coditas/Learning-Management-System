@@ -8,7 +8,6 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -54,6 +53,10 @@ public class JwtUtil {
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
 
+    }
+
+    public String extractTypeFromToken(String token){
+       return extractClaims(token).get("type",String.class);
     }
 
     public Claims extractClaims(String token){

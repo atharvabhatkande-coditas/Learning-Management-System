@@ -54,6 +54,15 @@ public class JwtFilter extends OncePerRequestFilter {
             }
         }
 
+        if(jwtUtil.extractTypeFromToken(token).equals("refresh")){
+            response.setStatus(401);
+            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+            ErrorResponse errorResponse=new ErrorResponse("Unauthorized",401);
+            ApplicationResponse<List<ErrorResponse>> applicationResponse=new ApplicationResponse<>(List.of(errorResponse));
+            response.getWriter().write(objectMapper.writeValueAsString(applicationResponse));
+            return;
+        }
+
         if(username!=null && SecurityContextHolder.getContext().getAuthentication()==null){
             try{
                 UserDetails userDetails=customUserDetailsService.loadUserByUsername(username);
