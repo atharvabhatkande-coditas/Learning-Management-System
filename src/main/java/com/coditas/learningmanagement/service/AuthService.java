@@ -5,11 +5,16 @@ import com.coditas.learningmanagement.dto.request.RegisterRequest;
 import com.coditas.learningmanagement.dto.response.LoginResponseTokens;
 import com.coditas.learningmanagement.dto.response.RegisterResponse;
 import com.coditas.learningmanagement.entity.Employee;
+import com.coditas.learningmanagement.entity.Otp;
+import com.coditas.learningmanagement.entity.UniqueCode;
 import com.coditas.learningmanagement.enums.RoleType;
 import com.coditas.learningmanagement.exception.AlreadyExistException;
 import com.coditas.learningmanagement.exception.AuthorizationException;
+import com.coditas.learningmanagement.exception.NotFoundException;
 import com.coditas.learningmanagement.mappers.EmployeeMapper;
 import com.coditas.learningmanagement.repository.CustomUserDetailsRepository;
+import com.coditas.learningmanagement.repository.OtpRepository;
+import com.coditas.learningmanagement.repository.UniqueCodeRepository;
 import com.coditas.learningmanagement.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -22,12 +27,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-import static com.coditas.learningmanagement.constants.AuthConstants.REGISTRATION_SUCCESS;
-import static com.coditas.learningmanagement.constants.AuthConstants.UNAUTHORIZED;
+import static com.coditas.learningmanagement.constants.AuthConstants.*;
 import static com.coditas.learningmanagement.constants.ExceptionConstants.USER_EXISTS;
 
 @Service
@@ -38,8 +43,20 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
     private final PasswordEncoder passwordEncoder;
+    private final OtpRepository otpRepository;
+    private final UniqueCodeRepository uniqueCodeRepository;
 
     public RegisterResponse registerNewUser(RegisterRequest registerRequest){
+        Otp otp=otpRepository.findByEmail(registerRequest.getUsername())
+                .orElseThrow(()->new AuthorizationException(EMAIL_NOT_VERIFIED));
+
+        if(!Objects.equals(registerRequest.getOtp(), otp.getOtpValue())){
+            throw new AuthorizationException(OTP_INVALID);
+        }
+        if(otp.getExpireAt().before(new Date())){
+            throw new AuthorizationException(OTP_EXPIRED);
+        }
+
         Employee existEmployee=customUserDetailsRepository.findByUsername(registerRequest.getUsername()).orElse(null);
         if(existEmployee!=null){
             throw new AlreadyExistException(USER_EXISTS);
@@ -50,6 +67,16 @@ public class AuthService {
             roles.add(RoleType.LEARNER);
         }
         else{
+            UniqueCode uniqueCode=uniqueCodeRepository.findByEmail(registerRequest.getUsername())
+                    .orElseThrow(()->new AuthorizationException(EMAIL_NOT_VERIFIED));
+
+            if(!Objects.equals(uniqueCode.getCode(),registerRequest.getSecurityCode())){
+                throw new AuthorizationException(CODE_EXPIRED);
+            }
+            if(uniqueCode.getExpireAt().before(new Date())){
+                throw new AuthorizationException(CODE_EXPIRED);
+            }
+
             roles.add(RoleType.ADMIN);
             roles.add(RoleType.LEARNER);
         }

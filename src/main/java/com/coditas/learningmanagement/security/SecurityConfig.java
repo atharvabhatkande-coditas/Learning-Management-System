@@ -1,5 +1,6 @@
 package com.coditas.learningmanagement.security;
 
+import com.coditas.learningmanagement.enums.RoleType;
 import com.coditas.learningmanagement.filter.JwtFilter;
 import com.coditas.learningmanagement.service.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +28,9 @@ public class SecurityConfig {
         return http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth->auth
                         .requestMatchers("/lms/v1/auth/**").permitAll()
-                        .requestMatchers("/lms/v1/email/**").permitAll()
+                        .requestMatchers("/lms/v1/email/sendOtp").permitAll()
+                        .requestMatchers("/lms/v1/email/sendCode").hasRole(RoleType.SUPERADMIN.name())
+
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)

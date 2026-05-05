@@ -33,4 +33,6 @@ public class AuthController {
         ApplicationResponse<LoginResponseTokens> applicationResponse=new ApplicationResponse<>(authService.loginUser(loginRequest));
         return new ResponseEntity<>(applicationResponse, HttpStatus.OK);
     }
+
+
 }

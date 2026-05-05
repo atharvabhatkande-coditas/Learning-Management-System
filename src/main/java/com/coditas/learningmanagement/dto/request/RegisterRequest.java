@@ -34,6 +34,10 @@ public class RegisterRequest {
     private String lastName;
     private DepartmentType department;
 
+    @NotNull(message = NOT_EMPTY)
+    @NotBlank(message = NOT_NULL)
+    private String otp;
+
     private String securityCode;
 
     private EmployeeStatus employeeStatus;

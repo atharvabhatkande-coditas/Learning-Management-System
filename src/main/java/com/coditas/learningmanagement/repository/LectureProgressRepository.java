@@ -5,9 +5,10 @@ import com.coditas.learningmanagement.entity.LectureProgress;
 import com.coditas.learningmanagement.entity.Lectures;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
-
+@Repository
 public interface LectureProgressRepository extends JpaRepository<LectureProgress,Long> {
     Optional<LectureProgress> findByLectureAndEmployee(Lectures lecture, Employee employee);
     @Query("""
