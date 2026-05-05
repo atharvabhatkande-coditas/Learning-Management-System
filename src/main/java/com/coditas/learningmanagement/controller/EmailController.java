@@ -1,6 +1,6 @@
 package com.coditas.learningmanagement.controller;
 
-import com.coditas.learningmanagement.security.EmailDetails;
+import com.coditas.learningmanagement.dto.EmailDetails;
 import com.coditas.learningmanagement.service.EmailServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;

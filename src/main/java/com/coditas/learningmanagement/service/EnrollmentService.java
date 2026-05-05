@@ -74,4 +74,15 @@ public class EnrollmentService {
         return new ProgressResponse(courseMapper.toDto(enrollment.getCourse()),progress);
 
     }
+
+    public List<ProgressResponse> getALlEnrolledCourse() {
+        Employee enrolledBy=customUserDetailsRepository.findByUsername(authService.getUserDetails().getUsername()).orElseThrow(()->new NotFoundException(USER_NOT_FOUND));
+
+        List<Enrollment>enrollmentList=enrollmentRepository.findByEnrolledBy(enrolledBy);
+
+       return enrollmentList
+               .stream()
+               .map(enrollment ->
+                       new ProgressResponse(courseMapper.toDto(enrollment.getCourse()),enrollment.getProgress())).toList();
+    }
 }

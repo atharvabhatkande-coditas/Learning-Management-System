@@ -26,4 +26,5 @@ public class LectureProgressController {
         ApplicationResponse<GeneralResponse>applicationResponse=new ApplicationResponse<>(lectureProgressService.completeLecture(lectureId));
         return new ResponseEntity<>(applicationResponse, HttpStatus.CREATED);
     }
+
 }

@@ -1,4 +1,4 @@
-package com.coditas.learningmanagement.security;
+package com.coditas.learningmanagement.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/lms/v1/enroll")
@@ -26,6 +28,13 @@ public class EnrollmentController {
         ApplicationResponse<ProgressResponse>applicationResponse=new ApplicationResponse<>(enrollmentService.getProgress(enrollmentId));
         return new ResponseEntity<>(applicationResponse, HttpStatus.OK);
     }
+
+    @GetMapping("my-learnings")
+    public ResponseEntity<ApplicationResponse<List<ProgressResponse>>>getALlEnrolled(){
+        ApplicationResponse<List<ProgressResponse>>applicationResponse=new ApplicationResponse<>(enrollmentService.getALlEnrolledCourse());
+        return new ResponseEntity<>(applicationResponse, HttpStatus.OK);
+    }
+
 
 
 }
