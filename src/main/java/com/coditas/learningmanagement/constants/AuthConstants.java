@@ -16,6 +16,9 @@ public final class AuthConstants {
     public static final String EMAIL_NOT_VERIFIED="Please Verify your email";
     public static final String CODE_EXPIRED="Code Expired Please Reverify your email";
     public static final String CODE_INVALID="Code Invalid";
+    public static final String LOGIN_FAILURE="“Couldn’t find your account, \n" +
+            "Check your credentials or create an account";
+
 
 
 }

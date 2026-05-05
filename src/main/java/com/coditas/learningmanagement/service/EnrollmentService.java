@@ -7,6 +7,7 @@ import com.coditas.learningmanagement.entity.Course;
 import com.coditas.learningmanagement.entity.Employee;
 import com.coditas.learningmanagement.entity.Enrollment;
 import com.coditas.learningmanagement.enums.EnrollmentStatus;
+import com.coditas.learningmanagement.enums.LectureStatus;
 import com.coditas.learningmanagement.exception.AlreadyExistException;
 import com.coditas.learningmanagement.exception.NotFoundException;
 import com.coditas.learningmanagement.mappers.CourseMapper;
@@ -58,7 +59,7 @@ public class EnrollmentService {
         Enrollment enrollment=enrollmentRepository.findById(enrollmentId).orElseThrow(()->new NotFoundException(NOT_ENROLLED));
         Long courseId=enrollment.getCourse().getCourseId();
         Long totalLectures=lectureRepository.countByCourse_CourseId(courseId);
-        Long lecturesCompleted=lectureProgressRepository.countCompleted(enrollment.getEnrolledBy().getEmployeeId(),courseId);
+        Long lecturesCompleted=lectureProgressRepository.countCompletedLectures(enrollment.getEnrolledBy().getEmployeeId(),courseId, LectureStatus.COMPLETED);
 
         double progress= (double)lecturesCompleted*100/totalLectures;
         enrollment.setProgress(progress);
