@@ -1,8 +1,5 @@
 package com.coditas.learningmanagement.dto.request;
 
-import com.coditas.learningmanagement.enums.DepartmentType;
-import com.coditas.learningmanagement.enums.EmployeeStatus;
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -18,32 +15,19 @@ import static com.coditas.learningmanagement.constants.DtoConstants.NOT_NULL;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class RegisterRequest {
+public class ChangePassword {
 
     @NotNull(message = NOT_EMPTY)
     @NotBlank(message = NOT_NULL)
-    @Email(message = "Invalid Email format")
-    private String username;
+    private String previousPassword;
 
     @NotNull(message = NOT_EMPTY)
     @NotBlank(message = NOT_NULL)
     @Size(min = 8,message = "Password min 8 characters required")
-    private String password;
+    private String newPassword;
 
     @NotNull(message = NOT_EMPTY)
     @NotBlank(message = NOT_NULL)
     @Size(min = 8,message = "Password min 8 characters required")
     private String confirmPassword;
-
-    private String firstName;
-    private String lastName;
-    private DepartmentType department;
-
-    @NotNull(message = NOT_EMPTY)
-    @NotBlank(message = NOT_NULL)
-    private String otp;
-
-    private String securityCode;
-
-    private EmployeeStatus employeeStatus;
 }

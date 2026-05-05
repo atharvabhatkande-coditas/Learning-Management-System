@@ -13,4 +13,5 @@ public final  class LectureConstants {
     public static final String LECTURE_NOT_FOUND="Lecture Not found";
     public static final String LECTURE_STARTED="Lecture Started";
     public static final String LECTURE_COMPLETED="Lecture Completed";
+    public static final String LECTURE_NOT_STARTED="Lecture Completed";
 }

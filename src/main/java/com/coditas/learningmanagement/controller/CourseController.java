@@ -34,7 +34,7 @@ public class CourseController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApplicationResponse<CourseResponseDto>>getAllCourse(@PathVariable Long id){
+    public ResponseEntity<ApplicationResponse<CourseResponseDto>>getCourse(@PathVariable Long id){
         ApplicationResponse<CourseResponseDto> applicationResponse=new ApplicationResponse<>(courseService.getCourse(id));
         return new ResponseEntity<>(applicationResponse, HttpStatus.CREATED);
     }

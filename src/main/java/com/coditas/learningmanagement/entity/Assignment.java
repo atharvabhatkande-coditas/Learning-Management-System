@@ -19,6 +19,7 @@ public class Assignment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long assignmentId;
+    private String assignmentLink;
 
     private String title;
     private LocalDate dueDate;

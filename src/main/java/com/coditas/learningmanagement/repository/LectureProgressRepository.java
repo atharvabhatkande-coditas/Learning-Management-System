@@ -16,13 +16,4 @@ public interface LectureProgressRepository extends JpaRepository<LectureProgress
     @Query("SELECT COUNT(lp.id) FROM LectureProgress lp WHERE lp.employee.id = :employeeId AND lp.lecture.course.id = :courseId AND lp.lectureStatus = :status")
     long countCompletedLectures(Long employeeId, Long courseId, LectureStatus status);
 
-
-  /*  @Query("""
-            SELECT COUNT(lp)
-            FROM LectureProgress lp
-            WHERE lp.employee.id = :employeeId
-            AND lp.lecture.course.id = :courseId
-            AND lp.lectureStatus = com.coditas.learningmanagement.enums.LectureStatus.COMPLETED
-            """)
-    Long countCompleted(Long employeeId, Long courseId);*/
 }

@@ -1,6 +1,7 @@
 package com.coditas.learningmanagement.service;
 
 import com.coditas.learningmanagement.constants.DtoConstants;
+import com.coditas.learningmanagement.dto.request.ChangePassword;
 import com.coditas.learningmanagement.dto.response.EmployeeDto;
 import com.coditas.learningmanagement.dto.response.ErrorResponse;
 import com.coditas.learningmanagement.dto.response.GeneralResponse;
@@ -10,7 +11,9 @@ import com.coditas.learningmanagement.mappers.EmployeeMapper;
 import com.coditas.learningmanagement.repository.CustomUserDetailsRepository;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.validation.ValidationException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
@@ -18,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import static com.coditas.learningmanagement.constants.AuthConstants.CHECK_PASSWORD;
 import static com.coditas.learningmanagement.constants.ExceptionConstants.USER_NOT_FOUND;
 
 @Service
@@ -28,6 +32,7 @@ public class EmployeeService {
     private final AuthService authService;
     private final EmployeeMapper employeeMapper;
     private final ObjectMapper objectMapper;
+    private final PasswordEncoder passwordEncoder;
 
     public EmployeeDto getProfile() {
         Employee employee=customUserDetailsRepository.findByUsername(authService.getUserDetails().getUsername())
@@ -48,5 +53,19 @@ public class EmployeeService {
         } catch (JsonMappingException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public GeneralResponse changePassword(ChangePassword changePassword) {
+        if(!changePassword.getNewPassword().equals(changePassword.getConfirmPassword())){
+            throw new AuthorizationException(CHECK_PASSWORD);
+        }
+
+        Employee employee=customUserDetailsRepository.findByUsername(authService.getUserDetails().getUsername())
+                .orElseThrow(()->new AuthorizationException(USER_NOT_FOUND));
+
+        employee.setPassword(passwordEncoder.encode(changePassword.getNewPassword()));
+        customUserDetailsRepository.save(employee);
+        return new GeneralResponse(DtoConstants.UPDATED);
+
     }
 }

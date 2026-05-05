@@ -42,6 +42,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET,LECTURE).hasRole(RoleType.LEARNER.name())
                         .requestMatchers(LECTURE_PROGRESS).hasRole(RoleType.LEARNER.name())
                         .requestMatchers(ENROLL).hasRole(RoleType.LEARNER.name())
+                        .requestMatchers(EMPLOYEE).hasRole(RoleType.LEARNER.name())
+                        .requestMatchers(HttpMethod.GET,ASSIGNMENT).hasRole(RoleType.LEARNER.name())
 
 
                         //admin
@@ -52,6 +54,10 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST,LECTURE).hasRole(RoleType.ADMIN.name())
                         .requestMatchers(HttpMethod.DELETE,LECTURE).hasRole(RoleType.ADMIN.name())
                         .requestMatchers(HttpMethod.PATCH,LECTURE).hasRole(RoleType.ADMIN.name())
+
+                        .requestMatchers(HttpMethod.POST,ASSIGNMENT).hasRole(RoleType.ADMIN.name())
+                        .requestMatchers(HttpMethod.PATCH,ASSIGNMENT).hasRole(RoleType.ADMIN.name())
+                        .requestMatchers(HttpMethod.DELETE,ASSIGNMENT).hasRole(RoleType.ADMIN.name())
 
 
 

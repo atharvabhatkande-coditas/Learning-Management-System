@@ -52,6 +52,11 @@ public class AuthService {
     private final RefreshTokenRepository refreshTokenRepository;
 
     public RegisterResponse registerNewUser(RegisterRequest registerRequest){
+
+        if(!registerRequest.getPassword().equals(registerRequest.getConfirmPassword())){
+            throw new AuthorizationException(CHECK_PASSWORD);
+        }
+
         Otp otp=otpRepository.findByEmail(registerRequest.getUsername())
                 .orElseThrow(()->new AuthorizationException(EMAIL_NOT_VERIFIED));
 

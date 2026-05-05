@@ -18,6 +18,7 @@ public final class AuthConstants {
     public static final String CODE_INVALID="Code Invalid";
     public static final String LOGIN_FAILURE="“Couldn’t find your account, \n" +
             "Check your credentials or create an account";
+    public static final String CHECK_PASSWORD="Password and Confirm Password fields do not match";
 
 
 

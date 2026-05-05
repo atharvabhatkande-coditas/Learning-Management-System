@@ -58,7 +58,7 @@ public class LectureProgressService {
 
         LectureProgress lectureProgress=lectureProgressRepository.findByLectureAndEmployee(lecture,employee).orElse(null);
         if(lectureProgress==null){
-            throw new NotFoundException(NOT_ENROLLED);
+            throw new NotFoundException(LECTURE_NOT_STARTED);
         }
         lectureProgress.setLectureStatus(LectureStatus.COMPLETED);
         lectureProgressRepository.save(lectureProgress);
