@@ -11,4 +11,5 @@ public final  class DtoConstants {
     public static final String NOT_FOUND="Not Found";
     public static final String UPDATED="Updated Successfully";
     public static final String DELETED="Deleted Successfully";
+    public static final String EXIST="Already Exist";
 }

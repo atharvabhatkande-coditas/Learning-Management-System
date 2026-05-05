@@ -43,7 +43,7 @@ public class CourseController {
         ApplicationResponse<CourseResponse> applicationResponse=new ApplicationResponse<>(courseService.updateCourse(updates,id));
         return new ResponseEntity<>(applicationResponse, HttpStatus.CREATED);
     }
-    @PatchMapping("/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<ApplicationResponse<CourseResponse>>deleteCourse(@PathVariable Long id){
         ApplicationResponse<CourseResponse> applicationResponse=new ApplicationResponse<>(courseService.deleteCourse(id));
         return new ResponseEntity<>(applicationResponse, HttpStatus.CREATED);

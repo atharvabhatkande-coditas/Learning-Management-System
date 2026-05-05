@@ -22,8 +22,7 @@ public class LectureDto {
     @NotBlank(message = NOT_NULL)
     private String title;
 
-    @NotNull(message = NOT_EMPTY)
-    @NotBlank(message = NOT_NULL)
+
     private ContentType contentType;
 
     @NotNull(message = NOT_EMPTY)
