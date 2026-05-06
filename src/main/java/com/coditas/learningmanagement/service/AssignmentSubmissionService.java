@@ -3,7 +3,7 @@ package com.coditas.learningmanagement.service;
 import com.coditas.learningmanagement.dto.request.GeneralRequest;
 import com.coditas.learningmanagement.dto.request.ScoresDto;
 import com.coditas.learningmanagement.dto.response.AssignmentSubmissionDto;
-import com.coditas.learningmanagement.dto.response.GeneralResponse;
+import com.coditas.learningmanagement.dto.response.SingleResponse;
 import com.coditas.learningmanagement.entity.*;
 import com.coditas.learningmanagement.enums.EnrollmentStatus;
 import com.coditas.learningmanagement.enums.SubmissionStatus;
@@ -19,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 import static com.coditas.learningmanagement.constants.AssignmentConstants.*;
 import static com.coditas.learningmanagement.constants.DtoConstants.UPDATED;
@@ -35,7 +36,7 @@ public class AssignmentSubmissionService {
     private final EnrollmentRepository enrollmentRepository;
     private final AssignmentSubmissionMapper assignmentSubmissionMapper;
 
-    public GeneralResponse submitAssignment(Long assignmentId, GeneralRequest request) {
+    public SingleResponse submitAssignment(Long assignmentId, GeneralRequest request) {
 
         Assignment assignment=assignmentRepository.findById(assignmentId)
                 .orElseThrow(()->new NotFoundException(ASSIGNMENT_NOT_FOUND));
@@ -44,13 +45,16 @@ public class AssignmentSubmissionService {
                 .orElseThrow(()->new NotFoundException(USER_NOT_FOUND));
         Course course=assignment.getCourse();
 
-        Enrollment enrollment=enrollmentRepository.findByCourseAndEnrolledBy(course,submittedBy).orElseThrow(()->new NotFoundException(NOT_ENROLLED));
+        Enrollment enrollment=enrollmentRepository.findByCourseAndEnrolledBy(course,submittedBy)
+                .orElseThrow(()->new NotFoundException(NOT_ENROLLED));
         if(enrollment.getEnrollmentStatus()!= EnrollmentStatus.COMPLETED){
             throw new ForbiddenException(SUBMISSION_FORBIDDEN);
         }
 
-        AssignmentSubmission assignmentSubmission= assignmentSubmissionRepository.findByAssignmentAndSubmittedBy(assignment,submittedBy).orElse(null);
-        if (assignmentSubmission!=null){
+        AssignmentSubmission assignmentSubmission= assignmentSubmissionRepository.findByAssignmentAndSubmittedBy(assignment,submittedBy)
+                .orElse(null);
+
+        if (!Objects.isNull(assignmentSubmission)){
             throw new AlreadyExistException(ALREADY_SUBMITTED);
         }
 
@@ -62,7 +66,7 @@ public class AssignmentSubmissionService {
 
         assignmentSubmissionRepository.save(assignmentSubmission);
 
-        return new GeneralResponse(ASSIGNMENT_SUBMITTED);
+        return new SingleResponse(ASSIGNMENT_SUBMITTED);
 
     }
 
@@ -71,13 +75,13 @@ public class AssignmentSubmissionService {
         return assignmentSubmissionList.stream().map(assignmentSubmissionMapper::toDto).toList();
     }
 
-    public GeneralResponse updateScores(Long submissionId, ScoresDto scores) {
+    public SingleResponse updateScores(Long submissionId, ScoresDto scores) {
         AssignmentSubmission assignmentSubmission=assignmentSubmissionRepository.findById(submissionId)
                 .orElseThrow(()->new NotFoundException(ASSIGNMENT_NOT_SUBMITTED));
 
         assignmentSubmission.setSubmissionStatus(SubmissionStatus.REVIEWED);
         assignmentSubmission.setScore(scores.getScores());
         assignmentSubmissionRepository.save(assignmentSubmission);
-        return new GeneralResponse(UPDATED);
+        return new SingleResponse(UPDATED);
     }
 }

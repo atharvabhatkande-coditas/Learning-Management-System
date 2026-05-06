@@ -4,7 +4,7 @@ import com.coditas.learningmanagement.dto.request.GeneralRequest;
 import com.coditas.learningmanagement.dto.request.ScoresDto;
 import com.coditas.learningmanagement.dto.response.ApplicationResponse;
 import com.coditas.learningmanagement.dto.response.AssignmentSubmissionDto;
-import com.coditas.learningmanagement.dto.response.GeneralResponse;
+import com.coditas.learningmanagement.dto.response.SingleResponse;
 import com.coditas.learningmanagement.service.AssignmentSubmissionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,8 +21,8 @@ public class AssignmentSubmissionController {
 
 
     @PostMapping("/{assignmentId}")
-    public ResponseEntity<ApplicationResponse<GeneralResponse>>submitAssignment(@PathVariable Long assignmentId, @RequestBody GeneralRequest request){
-        ApplicationResponse<GeneralResponse>applicationResponse=new ApplicationResponse<>(assignmentSubmissionService.submitAssignment(assignmentId,request));
+    public ResponseEntity<ApplicationResponse<SingleResponse>>submitAssignment(@PathVariable Long assignmentId, @RequestBody GeneralRequest request){
+        ApplicationResponse<SingleResponse>applicationResponse=new ApplicationResponse<>(assignmentSubmissionService.submitAssignment(assignmentId,request));
         return new ResponseEntity<>(applicationResponse, HttpStatus.CREATED);
     }
 
@@ -33,8 +33,8 @@ public class AssignmentSubmissionController {
     }
 
     @PatchMapping("scores/{submissionId}")
-    public ResponseEntity<ApplicationResponse<GeneralResponse>>updateScores(@PathVariable Long submissionId,@RequestBody ScoresDto scores){
-        ApplicationResponse<GeneralResponse>applicationResponse=new ApplicationResponse<>(assignmentSubmissionService.updateScores(submissionId,scores));
+    public ResponseEntity<ApplicationResponse<SingleResponse>>updateScores(@PathVariable Long submissionId, @RequestBody ScoresDto scores){
+        ApplicationResponse<SingleResponse>applicationResponse=new ApplicationResponse<>(assignmentSubmissionService.updateScores(submissionId,scores));
         return new ResponseEntity<>(applicationResponse, HttpStatus.OK);
     }
 

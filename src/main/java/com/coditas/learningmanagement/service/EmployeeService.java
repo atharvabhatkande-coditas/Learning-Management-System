@@ -2,8 +2,9 @@ package com.coditas.learningmanagement.service;
 
 import com.coditas.learningmanagement.constants.DtoConstants;
 import com.coditas.learningmanagement.dto.request.ChangePassword;
+import com.coditas.learningmanagement.dto.request.ProfileUpdateRequest;
 import com.coditas.learningmanagement.dto.response.EmployeeDto;
-import com.coditas.learningmanagement.dto.response.GeneralResponse;
+import com.coditas.learningmanagement.dto.response.SingleResponse;
 import com.coditas.learningmanagement.entity.Employee;
 import com.coditas.learningmanagement.exception.AuthorizationException;
 import com.coditas.learningmanagement.mappers.EmployeeMapper;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 
 import java.util.Map;
+import java.util.Objects;
 
 import static com.coditas.learningmanagement.constants.AuthConstants.CHECK_PASSWORD;
 import static com.coditas.learningmanagement.constants.ExceptionConstants.PASSWORD_IDENTICAL;
@@ -38,26 +40,25 @@ public class EmployeeService {
         return employeeMapper.toDto(employee);
     }
 
-    public GeneralResponse updateProfile(Map<String, Object>updates)   {
+    public SingleResponse updateProfile(ProfileUpdateRequest updates)   {
         Employee employee=customUserDetailsRepository.findByUsername(authService.getUserDetails().getUsername())
                 .orElseThrow(()->new AuthorizationException(USER_NOT_FOUND));
 
-        try {
-            objectMapper.updateValue(employee,updates);
-            customUserDetailsRepository.save(employee);
-
-            return new GeneralResponse(DtoConstants.UPDATED);
-        } catch (JsonMappingException e) {
-            throw new RuntimeException(e);
+       if(!Objects.isNull(updates.getFirstName())){
+           employee.setFirstName(updates.getFirstName());
+       }
+        if(!Objects.isNull(updates.getLastName())){
+            employee.setLastName(updates.getLastName());
         }
+        customUserDetailsRepository.save(employee);
+        return new SingleResponse(DtoConstants.UPDATED);
+
     }
 
-    public GeneralResponse changePassword(ChangePassword changePassword) {
+    public SingleResponse changePassword(ChangePassword changePassword) {
         if(!changePassword.getNewPassword().equals(changePassword.getConfirmPassword())){
             throw new AuthorizationException(CHECK_PASSWORD);
         }
-
-
 
         Employee employee=customUserDetailsRepository.findByUsername(authService.getUserDetails().getUsername())
                 .orElseThrow(()->new AuthorizationException(USER_NOT_FOUND));
@@ -68,7 +69,7 @@ public class EmployeeService {
 
         employee.setPassword(passwordEncoder.encode(changePassword.getNewPassword()));
         customUserDetailsRepository.save(employee);
-        return new GeneralResponse(DtoConstants.UPDATED);
+        return new SingleResponse(DtoConstants.UPDATED);
 
     }
 }

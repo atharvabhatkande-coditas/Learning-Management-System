@@ -1,9 +1,10 @@
 package com.coditas.learningmanagement.controller;
 
 import com.coditas.learningmanagement.dto.request.ChangePassword;
+import com.coditas.learningmanagement.dto.request.ProfileUpdateRequest;
 import com.coditas.learningmanagement.dto.response.ApplicationResponse;
 import com.coditas.learningmanagement.dto.response.EmployeeDto;
-import com.coditas.learningmanagement.dto.response.GeneralResponse;
+import com.coditas.learningmanagement.dto.response.SingleResponse;
 import com.coditas.learningmanagement.service.EmployeeService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -26,14 +27,14 @@ public class EmployeeController {
     }
 
     @PatchMapping("/profile")
-    public ResponseEntity<ApplicationResponse<GeneralResponse>>updateProfile(@RequestBody Map<String,Object> updates)   {
-        ApplicationResponse<GeneralResponse>applicationResponse=new ApplicationResponse<>(employeeService.updateProfile(updates));
+    public ResponseEntity<ApplicationResponse<SingleResponse>>updateProfile(@RequestBody ProfileUpdateRequest updates)   {
+        ApplicationResponse<SingleResponse>applicationResponse=new ApplicationResponse<>(employeeService.updateProfile(updates));
         return new ResponseEntity<>(applicationResponse, HttpStatus.OK);
     }
 
     @PatchMapping("/profile/password")
-    public ResponseEntity<ApplicationResponse<GeneralResponse>>changePassword(@Valid @RequestBody ChangePassword changePassword)   {
-        ApplicationResponse<GeneralResponse>applicationResponse=new ApplicationResponse<>(employeeService.changePassword(changePassword));
+    public ResponseEntity<ApplicationResponse<SingleResponse>>changePassword(@Valid @RequestBody ChangePassword changePassword)   {
+        ApplicationResponse<SingleResponse>applicationResponse=new ApplicationResponse<>(employeeService.changePassword(changePassword));
         return new ResponseEntity<>(applicationResponse, HttpStatus.OK);
     }
 

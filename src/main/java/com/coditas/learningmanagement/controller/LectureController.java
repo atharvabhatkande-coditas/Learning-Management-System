@@ -1,6 +1,7 @@
 package com.coditas.learningmanagement.controller;
 
 import com.coditas.learningmanagement.dto.LectureDto;
+import com.coditas.learningmanagement.dto.request.LectureUpdateRequest;
 import com.coditas.learningmanagement.dto.response.ApplicationResponse;
 import com.coditas.learningmanagement.dto.response.LectureResponse;
 import com.coditas.learningmanagement.service.LectureService;
@@ -33,7 +34,7 @@ public class LectureController {
     }
 
     @PatchMapping("/{lectureId}")
-    public ResponseEntity<ApplicationResponse<LectureResponse>> updateLecture(@PathVariable Long lectureId, Map<String,Object> updates){
+    public ResponseEntity<ApplicationResponse<LectureResponse>> updateLecture(@PathVariable Long lectureId, LectureUpdateRequest updates){
         ApplicationResponse<LectureResponse>applicationResponse=new ApplicationResponse<>(lectureService.updateLecture(lectureId,updates));
         return new ResponseEntity<>(applicationResponse, HttpStatus.OK);
     }

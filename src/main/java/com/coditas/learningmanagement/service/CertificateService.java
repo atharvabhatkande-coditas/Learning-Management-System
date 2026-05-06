@@ -1,7 +1,7 @@
 package com.coditas.learningmanagement.service;
 
 import com.coditas.learningmanagement.dto.response.CertificateDto;
-import com.coditas.learningmanagement.dto.response.GeneralResponse;
+import com.coditas.learningmanagement.dto.response.SingleResponse;
 import com.coditas.learningmanagement.entity.*;
 import com.coditas.learningmanagement.enums.SubmissionStatus;
 import com.coditas.learningmanagement.exception.ForbiddenException;
@@ -32,9 +32,11 @@ public class CertificateService {
 
 
     public CertificateDto generateCertificate(Long submissionId) {
-        Employee issuedTo=customUserDetailsRepository.findByUsername(authService.getUserDetails().getUsername()).orElseThrow(()->new NotFoundException(USER_NOT_FOUND));
-        AssignmentSubmission assignmentSubmission=assignmentSubmissionRepository.findById(submissionId).orElseThrow(()->new NotFoundException(ASSIGNMENT_NOT_SUBMITTED));
-        if(!assignmentSubmission.getSubmissionStatus().equals(SubmissionStatus.REVIEWED)){
+        Employee issuedTo=customUserDetailsRepository.findByUsername(authService.getUserDetails().getUsername())
+                .orElseThrow(()->new NotFoundException(USER_NOT_FOUND));
+        AssignmentSubmission assignmentSubmission=assignmentSubmissionRepository.findById(submissionId)
+                .orElseThrow(()->new NotFoundException(ASSIGNMENT_NOT_SUBMITTED));
+        if(!assignmentSubmission.getSubmissionStatus().equals(SubmissionStatus.REVIEWED) && assignmentSubmission.getScore()<60){
             throw new ForbiddenException(ASSIGNMENT_NOT_REVIEWED);
         }
         Certificate certificate=new Certificate();
@@ -47,14 +49,4 @@ public class CertificateService {
 
     }
 
-    public GeneralResponse updateCertificate(Long certificateId, Map<String,Object> updates) {
-        Certificate certificate=certificateRepository.findById(certificateId).orElseThrow(()->new NotFoundException(CERTIFICATE_NOT_ISSUED));
-        try {
-            objectMapper.updateValue(certificate,updates);
-        } catch (JsonMappingException e) {
-            throw new RuntimeException(e);
-        }
-        certificateRepository.save(certificate);
-        return  new GeneralResponse(UPDATED);
-    }
 }

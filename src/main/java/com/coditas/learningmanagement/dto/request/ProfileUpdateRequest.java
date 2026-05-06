@@ -1,4 +1,4 @@
-package com.coditas.learningmanagement.dto.response;
+package com.coditas.learningmanagement.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class GeneralResponse {
-
-    private String message;
+public class ProfileUpdateRequest {
+    private  String firstName;
+    private  String lastName;
 }

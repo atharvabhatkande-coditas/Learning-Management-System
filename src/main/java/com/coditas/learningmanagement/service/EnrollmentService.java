@@ -1,6 +1,6 @@
 package com.coditas.learningmanagement.service;
 
-import com.coditas.learningmanagement.dto.response.GeneralResponse;
+import com.coditas.learningmanagement.dto.response.SingleResponse;
 import com.coditas.learningmanagement.dto.response.ProgressResponse;
 import com.coditas.learningmanagement.entity.Course;
 import com.coditas.learningmanagement.entity.Employee;
@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 import static com.coditas.learningmanagement.constants.DtoConstants.NOT_FOUND;
 import static com.coditas.learningmanagement.constants.EnrollmentConstants.*;
@@ -34,11 +35,14 @@ public class EnrollmentService {
     private final CourseMapper courseMapper;
 
 
-    public GeneralResponse enrollIntoCourse(Long courseId) {
-        Course course=courseRepository.findById(courseId).orElseThrow(()->new NotFoundException(NOT_FOUND));
-        Employee enrolledBy=customUserDetailsRepository.findByUsername(authService.getUserDetails().getUsername()).orElseThrow(()->new NotFoundException(USER_NOT_FOUND));
-        Enrollment alreadyEnrolled=enrollmentRepository.findByCourseAndEnrolledBy(course,enrolledBy).orElse(null);
-        if(alreadyEnrolled!=null){
+    public SingleResponse enrollIntoCourse(Long courseId) {
+        Course course=courseRepository.findById(courseId)
+                .orElseThrow(()->new NotFoundException(NOT_FOUND));
+        Employee enrolledBy=customUserDetailsRepository.findByUsername(authService.getUserDetails().getUsername())
+                .orElseThrow(()->new NotFoundException(USER_NOT_FOUND));
+        Enrollment alreadyEnrolled=enrollmentRepository.findByCourseAndEnrolledBy(course,enrolledBy)
+                .orElse(null);
+        if(!Objects.isNull(alreadyEnrolled)){
             throw new AlreadyExistException(ALREADY_ENROLLED);
         }
         Enrollment enrollment=new Enrollment();
@@ -50,12 +54,13 @@ public class EnrollmentService {
         course.getEnrollmentList().add(enrollment);
 
         enrollmentRepository.save(enrollment);
-        return  new GeneralResponse(ENROLLED);
+        return  new SingleResponse(ENROLLED);
 
     }
 
     public ProgressResponse getProgress(Long enrollmentId) {
-        Enrollment enrollment=enrollmentRepository.findById(enrollmentId).orElseThrow(()->new NotFoundException(NOT_ENROLLED));
+        Enrollment enrollment=enrollmentRepository.findById(enrollmentId)
+                .orElseThrow(()->new NotFoundException(NOT_ENROLLED));
         Long courseId=enrollment.getCourse().getCourseId();
         Long totalLectures=lectureRepository.countByCourse_CourseId(courseId);
         Long lecturesCompleted=lectureProgressRepository.countCompletedLectures(enrollment.getEnrolledBy().getEmployeeId(),courseId, LectureStatus.COMPLETED);
@@ -76,7 +81,8 @@ public class EnrollmentService {
     }
 
     public List<ProgressResponse> getALlEnrolledCourse() {
-        Employee enrolledBy=customUserDetailsRepository.findByUsername(authService.getUserDetails().getUsername()).orElseThrow(()->new NotFoundException(USER_NOT_FOUND));
+        Employee enrolledBy=customUserDetailsRepository.findByUsername(authService.getUserDetails().getUsername())
+                .orElseThrow(()->new NotFoundException(USER_NOT_FOUND));
 
         List<Enrollment>enrollmentList=enrollmentRepository.findByEnrolledBy(enrolledBy);
 

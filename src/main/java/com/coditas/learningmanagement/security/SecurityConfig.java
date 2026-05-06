@@ -63,8 +63,6 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET,ASSIGNMENT_SUBMISSION).hasRole(RoleType.ADMIN.name())
                         .requestMatchers(HttpMethod.PATCH,ASSIGNMENT_SUBMISSION).hasRole(RoleType.ADMIN.name())
 
-                        .requestMatchers(HttpMethod.PATCH,CERTIFICATE).hasRole(RoleType.LEARNER.name())
-
 
 
 

@@ -3,7 +3,7 @@ package com.coditas.learningmanagement.service;
 import com.coditas.learningmanagement.dto.request.GeneralRequest;
 import com.coditas.learningmanagement.dto.request.LoginRequest;
 import com.coditas.learningmanagement.dto.request.RegisterRequest;
-import com.coditas.learningmanagement.dto.response.GeneralResponse;
+import com.coditas.learningmanagement.dto.response.SingleResponse;
 import com.coditas.learningmanagement.dto.response.LoginResponseTokens;
 import com.coditas.learningmanagement.dto.response.RegisterResponse;
 import com.coditas.learningmanagement.entity.Employee;
@@ -64,7 +64,7 @@ public class AuthService {
         }
 
         Employee existEmployee=customUserDetailsRepository.findByUsername(registerRequest.getUsername()).orElse(null);
-        if(existEmployee!=null){
+        if(!Objects.isNull(existEmployee)){
             throw new AlreadyExistException(USER_EXISTS);
         }
 
@@ -124,28 +124,35 @@ public class AuthService {
     }
 
 
-    public GeneralResponse generateAccessToken( GeneralRequest generalRequest) {
-        RefreshToken refreshToken=refreshTokenRepository.findByUsername(getUserDetails().getUsername()).orElse(null);
+    public SingleResponse generateAccessToken(GeneralRequest generalRequest) {
+        RefreshToken refreshToken=refreshTokenRepository.findByUsername(getUserDetails().getUsername())
+                .orElse(null);
         if(refreshToken!=null && !generalRequest.getValue().equals(refreshToken.getToken())){
                 throw new AuthorizationException(RE_LOGIN);
         }
 
         refreshToken=new RefreshToken();
-        List<String>roles=getUserDetails().getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
+        List<String>roles=getUserDetails()
+                .getAuthorities()
+                .stream()
+                .map(GrantedAuthority::getAuthority)
+                .toList();
+
         String accessToken=jwtUtil.generateTokenInternal(getUserDetails().getUsername(),roles,1000L*60*60,"access");
         refreshToken.setToken(accessToken);
         refreshToken.setUsername(getUserDetails().getUsername());
         refreshTokenRepository.save(refreshToken);
-        return new GeneralResponse(accessToken);
+        return new SingleResponse(accessToken);
     }
 
-    public GeneralResponse logout() {
-        RefreshToken refreshToken=refreshTokenRepository.findByUsername(getUserDetails().getUsername()).orElse(null);
-        if(refreshToken==null){
-            return new GeneralResponse(LOGOUT);
+    public SingleResponse logout() {
+        RefreshToken refreshToken=refreshTokenRepository.findByUsername(getUserDetails().getUsername())
+                .orElse(null);
+        if(Objects.isNull(refreshToken)){
+            return new SingleResponse(LOGOUT);
         }
         refreshToken.setToken(null);
         refreshTokenRepository.save(refreshToken);
-        return new GeneralResponse(LOGOUT);
+        return new SingleResponse(LOGOUT);
     }
 }

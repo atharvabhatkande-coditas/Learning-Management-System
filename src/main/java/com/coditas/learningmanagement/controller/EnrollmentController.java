@@ -1,7 +1,7 @@
 package com.coditas.learningmanagement.controller;
 
 import com.coditas.learningmanagement.dto.response.ApplicationResponse;
-import com.coditas.learningmanagement.dto.response.GeneralResponse;
+import com.coditas.learningmanagement.dto.response.SingleResponse;
 import com.coditas.learningmanagement.dto.response.ProgressResponse;
 import com.coditas.learningmanagement.service.EnrollmentService;
 import lombok.RequiredArgsConstructor;
@@ -18,8 +18,8 @@ public class EnrollmentController {
     private final EnrollmentService enrollmentService;
 
     @PostMapping("/course/{courseId}")
-    public ResponseEntity<ApplicationResponse<GeneralResponse>>enrollIntoCourse(@PathVariable Long courseId){
-        ApplicationResponse<GeneralResponse>applicationResponse=new ApplicationResponse<>(enrollmentService.enrollIntoCourse(courseId));
+    public ResponseEntity<ApplicationResponse<SingleResponse>>enrollIntoCourse(@PathVariable Long courseId){
+        ApplicationResponse<SingleResponse>applicationResponse=new ApplicationResponse<>(enrollmentService.enrollIntoCourse(courseId));
         return new ResponseEntity<>(applicationResponse, HttpStatus.CREATED);
     }
 
@@ -29,7 +29,7 @@ public class EnrollmentController {
         return new ResponseEntity<>(applicationResponse, HttpStatus.OK);
     }
 
-    @GetMapping("mylearnings")
+    @GetMapping("my-learnings")
     public ResponseEntity<ApplicationResponse<List<ProgressResponse>>>getALlEnrolled(){
         ApplicationResponse<List<ProgressResponse>>applicationResponse=new ApplicationResponse<>(enrollmentService.getALlEnrolledCourse());
         return new ResponseEntity<>(applicationResponse, HttpStatus.OK);
