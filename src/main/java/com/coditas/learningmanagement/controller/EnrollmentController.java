@@ -29,7 +29,7 @@ public class EnrollmentController {
         return new ResponseEntity<>(applicationResponse, HttpStatus.OK);
     }
 
-    @GetMapping("my-learnings")
+    @GetMapping("mylearnings")
     public ResponseEntity<ApplicationResponse<List<ProgressResponse>>>getALlEnrolled(){
         ApplicationResponse<List<ProgressResponse>>applicationResponse=new ApplicationResponse<>(enrollmentService.getALlEnrolledCourse());
         return new ResponseEntity<>(applicationResponse, HttpStatus.OK);

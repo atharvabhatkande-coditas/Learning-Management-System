@@ -33,7 +33,7 @@ public class AssignmentController {
     }
 
     @PatchMapping("/{assignmentId}")
-    public ResponseEntity<ApplicationResponse<GeneralResponse>> createAssignment(@Valid @RequestBody Map<String,Object> updates , @PathVariable Long assignmentId){
+    public ResponseEntity<ApplicationResponse<GeneralResponse>> updateAssignment(@Valid @RequestBody Map<String,Object> updates , @PathVariable Long assignmentId){
         ApplicationResponse<GeneralResponse>applicationResponse=new ApplicationResponse<>(assignmentService.updateAssignment(assignmentId,updates));
         return new ResponseEntity<>(applicationResponse, HttpStatus.OK);
     }

@@ -19,7 +19,6 @@ import com.coditas.learningmanagement.repository.OtpRepository;
 import com.coditas.learningmanagement.repository.RefreshTokenRepository;
 import com.coditas.learningmanagement.repository.UniqueCodeRepository;
 import com.coditas.learningmanagement.util.JwtUtil;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -54,7 +53,7 @@ public class AuthService {
             throw new AuthorizationException(CHECK_PASSWORD);
         }
 
-        Otp otp=otpRepository.findByEmail(registerRequest.getUsername())
+        Otp otp=otpRepository.findByEmailAndOtpValue(registerRequest.getUsername(),registerRequest.getOtp())
                 .orElseThrow(()->new AuthorizationException(EMAIL_NOT_VERIFIED));
 
         if(!Objects.equals(registerRequest.getOtp(), otp.getOtpValue())){
@@ -75,7 +74,7 @@ public class AuthService {
         }
         else{
             UniqueCode uniqueCode=uniqueCodeRepository.findByEmail(registerRequest.getUsername())
-                    .orElseThrow(()->new AuthorizationException(EMAIL_NOT_VERIFIED));
+                    .orElseThrow(()->new AuthorizationException(OTP_INVALID));
 
             if(!Objects.equals(uniqueCode.getCode(),registerRequest.getSecurityCode())){
                 throw new AuthorizationException(CODE_INVALID);
@@ -125,7 +124,7 @@ public class AuthService {
     }
 
 
-    public GeneralResponse generateAccessToken(@Valid GeneralRequest generalRequest) {
+    public GeneralResponse generateAccessToken( GeneralRequest generalRequest) {
         RefreshToken refreshToken=refreshTokenRepository.findByUsername(getUserDetails().getUsername()).orElse(null);
         if(refreshToken!=null && !generalRequest.getValue().equals(refreshToken.getToken())){
                 throw new AuthorizationException(RE_LOGIN);

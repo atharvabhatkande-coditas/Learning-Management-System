@@ -42,13 +42,6 @@ public class EmailServiceImpl implements EmailService{
             mailMessage.setSubject("Otp For Verification");
             javaMailSender.send(mailMessage);
 
-            Otp existingOtp=otpRepository.findByEmail(emailDetails.getRecipient()).orElse(null);
-            if(existingOtp!=null){
-                existingOtp.setOtpValue(otpValue);
-                existingOtp.setExpireAt(new Date(System.currentTimeMillis()+1000*60*5));
-                otpRepository.save(existingOtp);
-                return "OTP Sent Successfully";
-            }
             Otp otp=new Otp();
             otp.setEmail(emailDetails.getRecipient());
             otp.setOtpValue(otpValue);
@@ -75,11 +68,6 @@ public class EmailServiceImpl implements EmailService{
             mailMessage.setText("Your Unique Id for verification: "+uuid);
             mailMessage.setSubject("Unique Id For Verification");
             javaMailSender.send(mailMessage);
-            UniqueCode existingCode=uniqueCodeRepository.findByEmail(emailDetails.getRecipient()).orElse(null);
-            if(existingCode!=null){
-                existingCode.setExpireAt(new Date(System.currentTimeMillis()+1000*60*5));
-                existingCode.setCode(uuid.toString());
-            }
 
             UniqueCode uniqueCode=new UniqueCode();
             uniqueCode.setCode(uuid.toString());
