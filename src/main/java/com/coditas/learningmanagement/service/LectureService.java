@@ -1,9 +1,7 @@
 package com.coditas.learningmanagement.service;
 
-import com.coditas.learningmanagement.constants.DtoConstants;
-import com.coditas.learningmanagement.constants.ExceptionConstants;
+
 import com.coditas.learningmanagement.dto.LectureDto;
-import com.coditas.learningmanagement.dto.response.ErrorResponse;
 import com.coditas.learningmanagement.dto.response.LectureResponse;
 import com.coditas.learningmanagement.entity.Course;
 import com.coditas.learningmanagement.entity.Lectures;

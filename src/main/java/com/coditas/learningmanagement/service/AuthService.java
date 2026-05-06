@@ -3,7 +3,6 @@ package com.coditas.learningmanagement.service;
 import com.coditas.learningmanagement.dto.request.GeneralRequest;
 import com.coditas.learningmanagement.dto.request.LoginRequest;
 import com.coditas.learningmanagement.dto.request.RegisterRequest;
-import com.coditas.learningmanagement.dto.response.ErrorResponse;
 import com.coditas.learningmanagement.dto.response.GeneralResponse;
 import com.coditas.learningmanagement.dto.response.LoginResponseTokens;
 import com.coditas.learningmanagement.dto.response.RegisterResponse;
@@ -14,7 +13,6 @@ import com.coditas.learningmanagement.entity.UniqueCode;
 import com.coditas.learningmanagement.enums.RoleType;
 import com.coditas.learningmanagement.exception.AlreadyExistException;
 import com.coditas.learningmanagement.exception.AuthorizationException;
-import com.coditas.learningmanagement.exception.NotFoundException;
 import com.coditas.learningmanagement.mappers.EmployeeMapper;
 import com.coditas.learningmanagement.repository.CustomUserDetailsRepository;
 import com.coditas.learningmanagement.repository.OtpRepository;
@@ -28,7 +26,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -117,6 +114,9 @@ public class AuthService {
 
     public UserDetails getUserDetails(){
         Authentication authentication= SecurityContextHolder.getContext().getAuthentication();
+        if(Objects.isNull(authentication)){
+            throw new AuthorizationException(UNAUTHORIZED);
+        }
         UserDetails userDetails=(UserDetails)authentication.getPrincipal();
         if(Objects.isNull(userDetails)){
             throw new AuthorizationException(UNAUTHORIZED);
@@ -127,15 +127,13 @@ public class AuthService {
 
     public GeneralResponse generateAccessToken(@Valid GeneralRequest generalRequest) {
         RefreshToken refreshToken=refreshTokenRepository.findByUsername(getUserDetails().getUsername()).orElse(null);
-        if(refreshToken!=null){
-            if(!generalRequest.getValue().equals(refreshToken.getToken())){
+        if(refreshToken!=null && !generalRequest.getValue().equals(refreshToken.getToken())){
                 throw new AuthorizationException(RE_LOGIN);
-            }
         }
 
         refreshToken=new RefreshToken();
         List<String>roles=getUserDetails().getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
-        String accessToken=jwtUtil.generateTokenInternal(getUserDetails().getUsername(),roles,1000*60*60,"access");
+        String accessToken=jwtUtil.generateTokenInternal(getUserDetails().getUsername(),roles,1000L*60*60,"access");
         refreshToken.setToken(accessToken);
         refreshToken.setUsername(getUserDetails().getUsername());
         refreshTokenRepository.save(refreshToken);

@@ -2,8 +2,6 @@ package com.coditas.learningmanagement.repository;
 
 import com.coditas.learningmanagement.entity.Course;
 import com.coditas.learningmanagement.entity.Lectures;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

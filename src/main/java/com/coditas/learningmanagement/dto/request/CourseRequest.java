@@ -1,11 +1,7 @@
 package com.coditas.learningmanagement.dto.request;
 
-import com.coditas.learningmanagement.dto.AssignmentRequestDto;
 import com.coditas.learningmanagement.dto.LectureDto;
-import com.coditas.learningmanagement.dto.LectureRequestDto;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;

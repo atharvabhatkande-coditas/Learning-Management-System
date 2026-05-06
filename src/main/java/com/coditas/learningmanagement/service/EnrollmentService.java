@@ -1,6 +1,5 @@
 package com.coditas.learningmanagement.service;
 
-import com.coditas.learningmanagement.dto.response.ErrorResponse;
 import com.coditas.learningmanagement.dto.response.GeneralResponse;
 import com.coditas.learningmanagement.dto.response.ProgressResponse;
 import com.coditas.learningmanagement.entity.Course;

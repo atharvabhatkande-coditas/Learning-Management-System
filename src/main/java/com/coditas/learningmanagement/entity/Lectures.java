@@ -1,9 +1,7 @@
 package com.coditas.learningmanagement.entity;
 
 import com.coditas.learningmanagement.enums.ContentType;
-import com.coditas.learningmanagement.enums.LectureStatus;
 import jakarta.persistence.*;
-import jakarta.websocket.OnError;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

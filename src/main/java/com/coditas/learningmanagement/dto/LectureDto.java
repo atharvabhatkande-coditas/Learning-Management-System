@@ -7,7 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.validation.annotation.Validated;
 
 import static com.coditas.learningmanagement.constants.DtoConstants.NOT_EMPTY;
 import static com.coditas.learningmanagement.constants.DtoConstants.NOT_NULL;

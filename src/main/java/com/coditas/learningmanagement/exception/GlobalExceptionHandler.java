@@ -41,6 +41,14 @@ public class GlobalExceptionHandler {
         ApplicationResponse<List<ErrorResponse>>applicationResponse=new ApplicationResponse<>(List.of(errorResponse));
         return new ResponseEntity<>(applicationResponse,HttpStatus.UNAUTHORIZED);
     }
+    @ExceptionHandler(ForbiddenException.class)
+    public ResponseEntity<ApplicationResponse<List<ErrorResponse>>>handleValidationException(ForbiddenException e){
+        ErrorResponse errorResponse=new ErrorResponse(e.getMessage(), LocalDateTime.now(), HttpStatus.FORBIDDEN.value());
+        ApplicationResponse<List<ErrorResponse>>applicationResponse=new ApplicationResponse<>(List.of(errorResponse));
+        return new ResponseEntity<>(applicationResponse,HttpStatus.FORBIDDEN);
+    }
+
+
 
 
 

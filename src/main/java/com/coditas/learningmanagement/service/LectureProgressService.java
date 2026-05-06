@@ -1,24 +1,17 @@
 package com.coditas.learningmanagement.service;
 
-import com.coditas.learningmanagement.dto.response.CourseResponseDto;
-import com.coditas.learningmanagement.dto.response.ErrorResponse;
+
 import com.coditas.learningmanagement.dto.response.GeneralResponse;
-import com.coditas.learningmanagement.dto.response.ProgressResponse;
 import com.coditas.learningmanagement.entity.Employee;
 import com.coditas.learningmanagement.entity.LectureProgress;
 import com.coditas.learningmanagement.entity.Lectures;
 import com.coditas.learningmanagement.enums.LectureStatus;
 import com.coditas.learningmanagement.exception.NotFoundException;
-import com.coditas.learningmanagement.repository.CourseRepository;
 import com.coditas.learningmanagement.repository.CustomUserDetailsRepository;
 import com.coditas.learningmanagement.repository.LectureProgressRepository;
 import com.coditas.learningmanagement.repository.LectureRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-
-import static com.coditas.learningmanagement.constants.EnrollmentConstants.NOT_ENROLLED;
 import static com.coditas.learningmanagement.constants.ExceptionConstants.USER_NOT_FOUND;
 import static com.coditas.learningmanagement.constants.LectureConstants.*;
 

@@ -19,8 +19,6 @@ public class Certificate {
     private Long certificateId;
 
     private LocalDate issuedAt;
-    private String certificateUrl;
-
 
     @ManyToOne
     @JoinColumn(name = "issued_to")

@@ -1,26 +1,28 @@
 package com.coditas.learningmanagement.service;
 
 import com.coditas.learningmanagement.dto.AssignmentDto;
-import com.coditas.learningmanagement.dto.response.ErrorResponse;
 import com.coditas.learningmanagement.dto.response.GeneralResponse;
 import com.coditas.learningmanagement.entity.Assignment;
 import com.coditas.learningmanagement.entity.Course;
+
 import com.coditas.learningmanagement.exception.AlreadyExistException;
 import com.coditas.learningmanagement.exception.NotFoundException;
 import com.coditas.learningmanagement.mappers.AssignmentMapper;
 import com.coditas.learningmanagement.repository.AssignmentRepository;
 import com.coditas.learningmanagement.repository.CourseRepository;
+import com.coditas.learningmanagement.repository.CustomUserDetailsRepository;
+import com.coditas.learningmanagement.repository.EnrollmentRepository;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
 import static com.coditas.learningmanagement.constants.DtoConstants.*;
+
 
 
 @Service
@@ -30,6 +32,9 @@ public class AssignmentService {
     private final CourseRepository courseRepository;
     private final AssignmentMapper assignmentMapper;
     private final ObjectMapper objectMapper;
+    private final CustomUserDetailsRepository customUserDetailsRepository;
+    private final AuthService authService;
+    private final EnrollmentRepository enrollmentRepository;
 
     public GeneralResponse createAssignment(AssignmentDto assignmentDto,Long courseId) {
         Course course=courseRepository.findById(courseId).orElseThrow(()->new NotFoundException(NOT_FOUND));
@@ -49,6 +54,7 @@ public class AssignmentService {
     }
 
     public List<AssignmentDto> getAssignment(Long courseId) {
+
         List<Assignment>assignments=assignmentRepository.findByCourse_CourseId(courseId);
         return assignments.stream().map(assignmentMapper::toDto).toList();
     }
